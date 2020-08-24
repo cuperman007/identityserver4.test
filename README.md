@@ -1,5 +1,7 @@
 # identityserver4.test
 
+Examples have been guided by quick start documentation at [https://identityserver4.readthedocs.io/en/3.1.0/quickstarts/1_client_credentials.html]
+
 Simple proof of concept to check policies and scopes for identity server 4 using;
 - **.NET Core Identity Server 4**, 
 - **.NET Core Web API** and 
