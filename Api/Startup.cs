@@ -73,7 +73,12 @@ namespace API
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                // policy can also be applied to the entire API
+                // .RequireAuthorization("GrootPolicy");
+            });
         }
     }
 }
