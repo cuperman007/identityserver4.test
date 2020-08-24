@@ -21,7 +21,7 @@ namespace IdentityServer
             {
                 new ApiScope("api1scope", "My first API"),
                 new ApiScope("api2scope", "My second API"),
-                new ApiScope("grootscope", "My groot servoce scope"),
+                new ApiScope("grootscope", "My groot service scope"),
             };
 
         public static IEnumerable<Client> Clients =>

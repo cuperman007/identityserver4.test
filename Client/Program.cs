@@ -20,48 +20,67 @@ namespace Client
                 Thread.Sleep(2000);
                 return;
             }
-            await CallApi("", "https://localhost:6001/identity", "", "");
-            await CallApi("", "https://localhost:6001/api1", "", "");
-            await CallApi("", "https://localhost:6001/api2", "", "");
-            await CallApi("", "https://localhost:6001/groot", "", "");
-            await CallApi("", "https://localhost:6001/weatherforecast", "", "");
+
+            Console.ForegroundColor= ConsoleColor.Cyan;
+            Console.WriteLine("No token");
+            await CallApis("", "", "");
 
             Console.WriteLine("=====================");
-
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("API application + invalid scope.");
             var clientId = "MyApiApplication";
             var secret = "secret";
-            var scope = "api1scope";
+            var scope = "grootscope";
             var bearerToken = await GetBearerToken(client, disco.TokenEndpoint, clientId, secret, scope);
-            await CallApi(bearerToken, "https://localhost:6001/identity", clientId, scope);
-            await CallApi(bearerToken, "https://localhost:6001/api1", clientId, scope);
-            await CallApi(bearerToken, "https://localhost:6001/api2", clientId, scope);
-            await CallApi(bearerToken, "https://localhost:6001/groot", clientId, scope);
-            await CallApi(bearerToken, "https://localhost:6001/weatherforecast", clientId, scope);
+            await CallApis(bearerToken, clientId, scope);
 
             Console.WriteLine("=====================");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("API application + invalid secret.");
+            clientId = "MyApiApplication";
+            secret = "wrong secret";
+            scope = "grootscope";
+            bearerToken = await GetBearerToken(client, disco.TokenEndpoint, clientId, secret, scope);
+            await CallApis(bearerToken, clientId, scope);
 
+            Console.WriteLine("=====================");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("API application + Api1Scope claim.");
+            clientId = "MyApiApplication";
+            secret = "secret";
+            scope = "api1scope";
+            bearerToken = await GetBearerToken(client, disco.TokenEndpoint, clientId, secret, scope);
+            await CallApis(bearerToken, clientId, scope);
+
+            Console.WriteLine("=====================");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("API application + Api2Scope claim.");
             scope = "api2scope";
             bearerToken = await GetBearerToken(client, disco.TokenEndpoint, clientId, secret, scope);
-            await CallApi(bearerToken, "https://localhost:6001/identity", clientId, scope);
-            await CallApi(bearerToken, "https://localhost:6001/api1", clientId, scope);
-            await CallApi(bearerToken, "https://localhost:6001/api2", clientId, scope);
-            await CallApi(bearerToken, "https://localhost:6001/groot", clientId, scope);
-            await CallApi(bearerToken, "https://localhost:6001/weatherforecast", clientId, scope);
+            await CallApis(bearerToken, clientId, scope);
+
 
             Console.WriteLine("=====================");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("API application + Api2Scope claim.");
 
             clientId = "MyGrootApp";
             secret = "supersecret";
             scope = "grootscope";
             bearerToken = await GetBearerToken(client, disco.TokenEndpoint, clientId, secret, scope);
+            await CallApis(bearerToken, clientId, scope);
+
+            Console.ReadKey(); 
+            return;
+        }
+
+        private static async Task CallApis(string bearerToken, string clientId, string scope)
+        {
             await CallApi(bearerToken, "https://localhost:6001/identity", clientId, scope);
             await CallApi(bearerToken, "https://localhost:6001/api1", clientId, scope);
             await CallApi(bearerToken, "https://localhost:6001/api2", clientId, scope);
             await CallApi(bearerToken, "https://localhost:6001/groot", clientId, scope);
             await CallApi(bearerToken, "https://localhost:6001/weatherforecast", clientId, scope);
-
-            Console.ReadKey(); 
-            return;
         }
 
         private static async Task<string> GetBearerToken(HttpClient client, string tokenEndpoint, string clientId, string secret, string scope)
